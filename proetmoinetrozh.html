@@ -1,0 +1,276 @@
+<html>
+    <body></body>
+    <script>
+        var canvas = document.createElement('canvas');
+        document.body.style="display:flex; justify-content:center;";
+        var cxt = canvas.getContext('2d');
+        document.body.appendChild(canvas);
+        const width = canvas.width =680;
+        const height = canvas.height = 680;
+        var gold = 0;
+        var mrg = 5;
+        var nap = 0;
+        var ken=[];
+        class item{
+            constructor(pic, x, y){
+                this.img = pic;
+                this.posx = x;
+                this.posy = y;
+            }
+            draw(){
+                cxt.drawImage(this.img, mx-this.posx, my-this.posy, 40 ,40)
+            }
+
+        }
+        class piu{
+            constructor(pic, x, y){
+                this.img = pic;
+                this.posx = x;
+                this.posy = y;
+                this.napr=nap
+            }
+            draw(){
+                cxt.drawImage(this.img, mx-this.posx, my-this.posy, 40 ,40)
+            }
+            letel(){
+                if(this.napr==0){this.posy+=1.2};
+                if(this.napr==1){this.posy-=1.2};
+                if(this.napr==2){this.posx+=1.2};
+                if(this.napr==3){this.posx-=1.2};
+            }
+            unich(){
+                if(this.posx>=480){ken.splice(self,1)}
+                if(this.posx<=0+240){ken.splice(self,1)}
+                if(this.posy>=480+240){ken.splice(self,1)}
+                if(this.posy<=0+240){ken.splice(self,1)}
+            }
+            collide1000(monstred){
+                if((this.posx== monstred.posx)&&
+                (this.posy == monstred.posy))
+                {console.log("connect!???")
+                var net = mon.indexOf(monstred)
+                mon.splice(net,1)}
+            }
+
+        }
+        class monstred{
+            constructor(pic, x, y, s){
+                this.img = pic;
+                this.posx = x;
+                this.posy = y;
+                this.s = s;
+            }
+            draw(){
+                cxt.drawImage(this.img, mx-this.posx, my-this.posy, 70 ,70)
+            }
+            move(){
+                if(mx > 320 +this.posx){this.posx+= this.s};
+                if(mx <320+this.posx){this.posx-=this.s};
+                if(my > this.posy+320){this.posy+=this.s};
+                if(my< this.posy+320){this.posy-=this.s}
+            }
+
+        }
+        hero = new Image();
+        hero.src = 'heroesheet.png';
+        map = new Image();
+        map.src = 'mul.jpg'
+        map1 = new Image();
+        map1.src = 'gg.jpg'
+        map2 = new Image();
+        map2.src = 'ggwp.jpg'
+        trog1 = new Image();
+        trog1.src = 'i.png';
+        trog2 = new Image();
+        trog2.src = 'Б.png';
+        trog3 = new Image();
+        trog3.src = 'Беpng.png';
+        pam = new Image();
+        pam.src = 'фбу.png'
+        tuga1 =  new monstred(trog3,500,700,0.7)
+        tuga2 =  new monstred(trog2,100,200,0.5)
+        tuga3 =  new monstred(trog2,400,300,0.5)
+        tuga4 =  new monstred(trog1,400,300,1)
+        jumasindo = new Image();
+        jumasindo.src = 'gam.png';
+        jumas1 = new item(jumasindo, 578, 345);
+        jumas2 = new item(jumasindo, 123, 607);
+        jumas3 = new item(jumasindo, -369, 234);
+        jumas11 = new item(jumasindo, -100, 100);
+        jumas21 = new item(jumasindo, 345, 60);
+        jumas31 = new item(jumasindo, 10, 234);
+        jumas12 = new item(jumasindo, -528, 100);
+        jumas22 = new item(jumasindo, 200, 589);
+        jumas32= new item(jumasindo, 436, 234);
+        var loot =[jumas1,jumas2,jumas3,jumas11,jumas21,jumas31,jumas12,jumas22,jumas32]
+        var mon =[tuga2,tuga3]
+        //var ind = loot.indexOf(jumas1);
+        const sprwidth = 97;
+        const sprheight = 110;
+        let Kadr = 0;
+        let AnimLine =3.8;
+        let playframe = 0;
+        let slowframe = 5;
+        let long =9;
+        var mx = 100;
+        var my = 400;
+        function collide(item){
+                if((mx > 347 +item.posx)&&
+                (mx <367+item.posx)&&
+                (my > item.posy+355)&&
+                (my< item.posy+365))
+                {console.log("connect!",item.posx,item.posy)
+                var ind= loot.indexOf(item)
+                loot.splice(ind, 1),gold+=1}
+            }
+        function collide1(monstred){
+            if((mx > 337 +monstred.posx)&&
+                (mx <357+monstred.posx)&&
+                (my > monstred.posy+355)&&
+                (my< monstred.posy+365))
+                {console.log("connect!?"),animate1(), cancelAnimationFrame(argus)}
+            }
+        function collide2(monstred){
+            if((mx > 337 +monstred.posx)&&
+                (mx <357+monstred.posx)&&
+                (my > monstred.posy+355)&&
+                (my< monstred.posy+365))
+                {console.log("connect!??&"),gold-=1,mrg=4}
+            }
+        function collide3(monstred){
+            if((mx > 337 +monstred.posx)&&
+                (mx <357+monstred.posx)&&
+                (my > monstred.posy+355)&&
+                (my< monstred.posy+365))
+                {console.log("connect!??"), mrg-=0.2}
+            }
+        function animate(){
+            cxt.clearRect(0,0,width,height);
+            cxt.drawImage(map, mx-800, my-800, width+800, height+800)
+            cxt.drawImage(hero, Kadr*sprwidth,AnimLine*sprheight,sprwidth,sprheight,width/2,height/2,50,50);
+            mon.forEach(elem => elem.draw())
+            ken.forEach(elem => elem.draw())
+            ken.forEach(elem => elem.letel())
+            ken.forEach(elem => elem.unich())
+            ken.forEach(elem => elem.collide1000(mon))
+            mon.forEach(elem => elem.move())
+            mon.forEach(elem => collide1(elem))
+            loot.forEach(elem => elem.draw())
+            loot.forEach(elem => collide(elem))
+            tuga4.draw()
+            tuga4.move()
+            collide3(tuga4)
+            tuga1.draw()
+            tuga1.move()
+            collide2(tuga1)
+            if(mrg<=0){console.log("connect!?"),animate1(), cancelAnimationFrame(argus)}
+            if(gold<=-4){console.log("connect!?"),animate1(), cancelAnimationFrame(argus)}
+            if(gold==6){console.log("connect!?"),animate2(), cancelAnimationFrame(argus)}
+            if (playframe % slowframe == 0)
+            {if(Kadr < long){Kadr++}
+            else{Kadr = 0}}
+            playframe++;
+            console.log(mx,my)
+            cxt.fillStyle = "#00F";
+            cxt.font = "italic 30pt Arial";
+            cxt.fillText('Очки:'+gold, 20 , 50);
+            const argus =requestAnimationFrame(animate)
+        }
+        animate()
+        function animate1(){
+            cxt.clearRect(0,0,width,height);
+            cxt.drawImage(map1,0,0,700,500)
+            const argus1 =requestAnimationFrame(animate1)
+        }
+        function animate2(){
+            cxt.clearRect(0,0,width,height);
+            cxt.drawImage(map2,0,0,700,500)
+            const argus1 =requestAnimationFrame(animate2)
+        }
+        //прямо
+        //const width = canvas.width =320;
+        //const height = canvas.height = 400;
+        //hero = new Image();
+        //hero.src = 'heroesheet.png';
+        //const sprwidth = 97;
+        //const sprheight = 110;
+        //let Kadr = 0;
+        //let AnimLine =3.8;
+        //let playframe = 0;
+        //const slowframe = 5;
+        //function animate(){
+            //cxt.clearRect(0,0,width,height);
+            //cxt.drawImage(hero, Kadr*sprwidth,AnimLine*sprheight,sprwidth,sprheight,0,0,width,height);
+            //if (playframe % slowframe == 0)
+            //{if(Kadr < 9){Kadr++}
+            //else{Kadr = 0}}
+            //playframe++;
+            //requestAnimationFrame(animate)
+        document.addEventListener('keydown', ({keyCode})=>{
+            switch (keyCode){
+            case 65:
+            AnimLine = 4.69
+            slowframe = 5;
+            mx +=mrg;
+            long=9;
+            nap = 3;
+            console.log('left',mx,mrg)
+            break;
+            case 68:
+            AnimLine = 6.7
+            slowframe = 5;
+            mx-=mrg;
+            long=9;
+            nap = 2;
+            console.log('right',mx,mrg)
+            break;
+            case 83:
+            AnimLine=3.8;
+            slowframe = 5;
+            my -=mrg;
+            long=9;
+            nap = 1;
+            console.log('down',my,mrg)
+            break;
+            case 87:
+            AnimLine=5.7;
+            slowframe = 5;
+            my+=mrg;
+            nap = 0;
+            long=9;
+            console.log('up',my,mrg)
+            break;
+            case 82:
+            rrr=new piu(pam, mx-240,my-260)
+            ken.push(rrr)
+            console.log('ratata',mx)
+            break;
+            }
+        })
+        document.addEventListener('keyup', ({keyCode})=>{
+            switch (keyCode){
+            case 68:
+            AnimLine=1;
+            slowframe = 10;
+            long=2;
+            break;
+            case 65:
+            AnimLine=2.85;
+            slowframe = 10;
+            long=2;
+            break;
+            case 83:
+            AnimLine=0;
+            slowframe = 10;
+            long=2;
+            break;
+            case 87:
+            AnimLine=1.9;
+            slowframe = 15;
+            long=0;
+            break;
+            }
+        })
+    </script>
+</html>
+
