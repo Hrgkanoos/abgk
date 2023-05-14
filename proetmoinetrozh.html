@@ -11,6 +11,8 @@
         var mrg = 5;
         var nap = 0;
         var ken=[];
+        var bmb = 5;
+        var nbns=[];
         class item{
             constructor(pic, x, y){
                 this.img = pic;
@@ -22,34 +24,29 @@
             }
 
         }
-        class piu{
-            constructor(pic, x, y){
+        class mitem{
+            constructor(pic, x, y, kren){
                 this.img = pic;
                 this.posx = x;
                 this.posy = y;
-                this.napr=nap
+                this.kren = kren;
             }
             draw(){
                 cxt.drawImage(this.img, mx-this.posx, my-this.posy, 40 ,40)
+                
             }
-            letel(){
-                if(this.napr==0){this.posy+=1.2};
-                if(this.napr==1){this.posy-=1.2};
-                if(this.napr==2){this.posx+=1.2};
-                if(this.napr==3){this.posx-=1.2};
+            collide1234(monstred){
+                if((this.posx+20 >= monstred.posx)&&
+                (this.posx-20 <= monstred.posx)&&
+                (this.posy+20 >= monstred.posy)&&
+                (this.posy-20 <= monstred.posy)){monstred.s-=0.01}
             }
-            unich(){
-                if(this.posx>=480){ken.splice(self,1)}
-                if(this.posx<=0+240){ken.splice(self,1)}
-                if(this.posy>=480+240){ken.splice(self,1)}
-                if(this.posy<=0+240){ken.splice(self,1)}
-            }
-            collide1000(monstred){
-                if((this.posx== monstred.posx)&&
-                (this.posy == monstred.posy))
-                {console.log("connect!???")
-                var net = mon.indexOf(monstred)
-                mon.splice(net,1)}
+            delaila(mitem){
+                if (this.kren>=49){
+                    var ind1= nbns.indexOf(mitem)
+                    nbns.splice(ind1, 1)
+                    bmb+=1
+                }
             }
 
         }
@@ -69,10 +66,15 @@
                 if(my > this.posy+320){this.posy+=this.s};
                 if(my< this.posy+320){this.posy-=this.s}
             }
+            delete(){
+                this.posx+=100000000000000000000,this.s+=200
+            }
 
         }
         hero = new Image();
         hero.src = 'heroesheet.png';
+        ter = new Image();
+        ter.src = 'zdb1.png';
         map = new Image();
         map.src = 'mul.jpg'
         map1 = new Image();
@@ -87,10 +89,11 @@
         trog3.src = 'Беpng.png';
         pam = new Image();
         pam.src = 'фбу.png'
-        tuga1 =  new monstred(trog3,500,700,0.7)
-        tuga2 =  new monstred(trog2,100,200,0.5)
-        tuga3 =  new monstred(trog2,400,300,0.5)
-        tuga4 =  new monstred(trog1,400,300,1)
+        tuga1 =  new monstred(trog3,500,700,0.91)
+        tuga11 =  new monstred(trog3,50,70,0.87)
+        tuga2 =  new monstred(trog2,100,200,0.81)
+        tuga3 =  new monstred(trog2,400,300,0.77)
+        tuga4 =  new monstred(trog1,400,300,1.25)
         jumasindo = new Image();
         jumasindo.src = 'gam.png';
         jumas1 = new item(jumasindo, 578, 345);
@@ -125,25 +128,35 @@
             }
         function collide1(monstred){
             if((mx > 337 +monstred.posx)&&
-                (mx <357+monstred.posx)&&
+                (mx <367+monstred.posx)&&
                 (my > monstred.posy+355)&&
-                (my< monstred.posy+365))
+                (my< monstred.posy+370))
                 {console.log("connect!?"),animate1(), cancelAnimationFrame(argus)}
             }
         function collide2(monstred){
             if((mx > 337 +monstred.posx)&&
-                (mx <357+monstred.posx)&&
+                (mx <387+monstred.posx)&&
                 (my > monstred.posy+355)&&
-                (my< monstred.posy+365))
+                (my< monstred.posy+390))
                 {console.log("connect!??&"),gold-=1,mrg=4}
             }
         function collide3(monstred){
             if((mx > 337 +monstred.posx)&&
-                (mx <357+monstred.posx)&&
+                (mx <367+monstred.posx)&&
                 (my > monstred.posy+355)&&
-                (my< monstred.posy+365))
+                (my< monstred.posy+380))
                 {console.log("connect!??"), mrg-=0.2}
             }
+            function randomInteger(min, max) {
+            // получить случайное число от (min-0.5) до (max+0.5)
+            let rand = min - 0.5 + Math.random() * (max - min + 1);
+            return Math.round(rand);
+            }
+        function smert(monstred){
+            if(monstred<=0){
+                monstred.delete()
+            }
+        }
         function animate(){
             cxt.clearRect(0,0,width,height);
             cxt.drawImage(map, mx-800, my-800, width+800, height+800)
@@ -157,15 +170,27 @@
             mon.forEach(elem => collide1(elem))
             loot.forEach(elem => elem.draw())
             loot.forEach(elem => collide(elem))
+            nbns.forEach(elem => elem.draw())
+            nbns.forEach(elem => elem.kren+=0.1)
+            nbns.forEach(elem => elem.delaila(elem))
+            nbns.forEach(elem => elem.collide1234(tuga1))
+            nbns.forEach(elem => elem.collide1234(tuga11))
+            nbns.forEach(elem => elem.collide1234(tuga4))
             tuga4.draw()
             tuga4.move()
             collide3(tuga4)
+            smert(tuga4)
             tuga1.draw()
             tuga1.move()
             collide2(tuga1)
+            smert(tuga1)
+            tuga11.draw()
+            tuga11.move()
+            collide2(tuga11)
+            smert(tuga11)
             if(mrg<=0){console.log("connect!?"),animate1(), cancelAnimationFrame(argus)}
             if(gold<=-4){console.log("connect!?"),animate1(), cancelAnimationFrame(argus)}
-            if(gold==6){console.log("connect!?"),animate2(), cancelAnimationFrame(argus)}
+            if(gold==5){console.log("connect!?"),animate2(), cancelAnimationFrame(argus)}
             if (playframe % slowframe == 0)
             {if(Kadr < long){Kadr++}
             else{Kadr = 0}}
@@ -214,7 +239,7 @@
             mx +=mrg;
             long=9;
             nap = 3;
-            console.log('left',mx,mrg)
+            console.log(tuga11.s,tuga1.s,tuga4.s)
             break;
             case 68:
             AnimLine = 6.7
@@ -222,7 +247,7 @@
             mx-=mrg;
             long=9;
             nap = 2;
-            console.log('right',mx,mrg)
+            console.log(tuga11.s,tuga1.s,tuga4.s)
             break;
             case 83:
             AnimLine=3.8;
@@ -230,7 +255,7 @@
             my -=mrg;
             long=9;
             nap = 1;
-            console.log('down',my,mrg)
+            console.log(tuga11.s,tuga1.s,tuga4.s)
             break;
             case 87:
             AnimLine=5.7;
@@ -238,12 +263,19 @@
             my+=mrg;
             nap = 0;
             long=9;
-            console.log('up',my,mrg)
+            console.log(tuga11.s,tuga1.s,tuga4.s)
             break;
             case 82:
             rrr=new piu(pam, mx-240,my-260)
             ken.push(rrr)
-            console.log('ratata',mx)
+            console.log(tuga11.s,tuga1.s,tuga4.s)
+            break;
+            case 90:
+            if(bmb>0){
+            kine = new mitem(ter,mx-350,my-350,0)
+            nbns.push(kine)
+            bmb-=1
+            }
             break;
             }
         })
